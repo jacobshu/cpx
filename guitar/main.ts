@@ -51,22 +51,22 @@ const rawNotes = [
 
 function makeMajorScale(tonalCenter: number) {
   let majorScale = [0, 2, 4, 5, 7, 9, 11, 12];
-  let newScale = majorScale.map((tone) => tonalCenter * Math.pow(2, tone / 12));
+  let newScale = majorScale.map((tone) => Math.round(tonalCenter * Math.pow(2, tone / 12)));
   return newScale;
 }
 
 function makeMinorScale(tonalCenter: number) {
   const minorScale = [0, 2, 3, 5, 7, 8, 10, 12]; // semitones from root
-  let newScale = minorScale.map((tone) => tonalCenter * Math.pow(2, tone / 12));
+  let newScale = minorScale.map((tone) => Math.round(tonalCenter * Math.pow(2, tone / 12)));
   return newScale;
 }
 
 function chord(scale: number[], degree: number) {
   console.log(`Playing chord starting at: ${scale[degree]}`);
-  music.stopAllSounds();
-  light.stopAllAnimations();
-  light.showAnimation(light.rainbowAnimation, 1500);
-  light.setBrightness(150);
+  // music.stopAllSounds();
+  // light.stopAllAnimations();
+  // light.showAnimation(light.rainbowAnimation, 1500);
+  // light.setBrightness(150);
   const scaleAdjustment = degree > 1 ? 0.5 : 1;
   const extendedScale = scale.concat(scale.map((item) => item * 2));
   const root = extendedScale[degree] * scaleAdjustment;
@@ -77,35 +77,35 @@ function chord(scale: number[], degree: number) {
   console.log(
     `Root: ${root}; Third: ${third}; Fifth: ${fifth}; Seventh: ${seventh}; Octave: ${octave}`
   );
-  let rhythym: IRhythym = {
-    notes: [],
-    rests: [],
-  };
-  if (CONFIG.rhythym.custom.notes.length > 0) {
-    while (rhythym.notes.length < 5 || rhythym.rests.length < 4) {
-      rhythym.notes = CONFIG.rhythym.custom.notes.concat(
-        CONFIG.rhythym.custom.notes
-      );
-      rhythym.rests = CONFIG.rhythym.custom.rests.concat(
-        CONFIG.rhythym.custom.rests
-      );
-    }
-    music.playTone(scale[root], rhythym.notes[0]);
-    music.rest(rhythym.rests[0]);
-    music.playTone(scale[third], rhythym.notes[1]);
-    music.rest(rhythym.rests[1]);
-    music.playTone(scale[fifth], rhythym.notes[2]);
-    music.rest(rhythym.rests[2]);
-    music.playTone(scale[seventh], rhythym.notes[3]);
-    music.rest(rhythym.rests[3]);
-    music.playTone(scale[octave], rhythym.notes[4]);
-  } else {
-    music.playTone(scale[root], BeatFraction.Quarter);
-    music.playTone(scale[third], BeatFraction.Quarter);
-    music.playTone(scale[fifth], BeatFraction.Quarter);
-    music.playTone(scale[seventh], BeatFraction.Quarter);
-    music.playTone(scale[octave], BeatFraction.Half);
-  }
+  // let rhythym: IRhythym = {
+  //   notes: [],
+  //   rests: [],
+  // };
+  // if (CONFIG.rhythym.custom.notes.length > 0) {
+  //   while (rhythym.notes.length < 5 || rhythym.rests.length < 4) {
+  //     rhythym.notes = CONFIG.rhythym.custom.notes.concat(
+  //       CONFIG.rhythym.custom.notes
+  //     );
+  //     rhythym.rests = CONFIG.rhythym.custom.rests.concat(
+  //       CONFIG.rhythym.custom.rests
+  //     );
+  //   }
+  //   music.playTone(scale[root], rhythym.notes[0]);
+  //   music.rest(rhythym.rests[0]);
+  //   music.playTone(scale[third], rhythym.notes[1]);
+  //   music.rest(rhythym.rests[1]);
+  //   music.playTone(scale[fifth], rhythym.notes[2]);
+  //   music.rest(rhythym.rests[2]);
+  //   music.playTone(scale[seventh], rhythym.notes[3]);
+  //   music.rest(rhythym.rests[3]);
+  //   music.playTone(scale[octave], rhythym.notes[4]);
+  // } else {
+    music.playTone(root, BeatFraction.Quarter);
+    music.playTone(third, BeatFraction.Quarter);
+    music.playTone(fifth, BeatFraction.Quarter);
+    music.playTone(seventh, BeatFraction.Quarter);
+    music.playTone(octave, BeatFraction.Half);
+  // }
   light.setBrightness(0);
   return;
 }
@@ -116,19 +116,21 @@ function playSingleNote(scale: number[], degree: number) {
   return;
 }
 
-function makeCustomRhythym() {
-  let rawRhythym: number[] = [];
-  while (input.switchRight()) {
-    input.onLightConditionChanged(LightCondition.Dark, () => {
-      rawRhythym.push(control.millis());
-    });
-    input.onLightConditionChanged(LightCondition.Bright, () => {
-      rawRhythym.push(control.millis());
-    });
-  }
-  CONFIG.rhythym.custom = makeNotesAndRests(rawRhythym);
-  return;
-}
+// function makeCustomRhythym() {
+//   let rawRhythym: number[] = [];
+//   while (input.switchRight()) {
+//     input.onLightConditionChanged(LightCondition.Dark, () => {
+//       music.jumpUp.play()
+//       rawRhythym.push(control.millis());
+//     });
+//     input.onLightConditionChanged(LightCondition.Bright, () => {
+//       music.jumpDown.play()
+//       rawRhythym.push(control.millis());
+//     });
+//   }
+//   CONFIG.rhythym.custom = makeNotesAndRests(rawRhythym);
+//   return;
+// }
 
 function makeNotesAndRests(rawTiming: number[]) {
   const preprocess =
@@ -156,22 +158,25 @@ function makeNotesAndRests(rawTiming: number[]) {
 
 music.setTempo(140);
 music.setVolume(128);
-let theScale = makeMajorScale(CONFIG.toneCenter);
+let theScale = makeMajorScale(rawNotes[CONFIG.toneCenter]);
 
 input.buttonA.onEvent(ButtonEvent.Click, function () {
   console.log(`Changing Major Mode to: ${!CONFIG.isMajor}`);
   CONFIG.isMajor = !CONFIG.isMajor;
+  light.setBrightness(128)
+  CONFIG.isMajor ? light.setAll(0xff0000) : light.setAll(0x00ff00);
   theScale = CONFIG.isMajor
     ? makeMajorScale(rawNotes[CONFIG.toneCenter])
     : makeMinorScale(rawNotes[CONFIG.toneCenter]);
+  light.setBrightness(0);
 });
 
 input.buttonB.onEvent(ButtonEvent.Click, function () {
   chord(theScale, 0);
-  console.log(`Chord Mode: ${CONFIG.isChordMode}`);
-  console.log(`Changing Chord Mode to: `);
-  CONFIG.isChordMode = !CONFIG.isChordMode;
-  console.log(CONFIG.isChordMode);
+  // console.log(`Chord Mode: ${CONFIG.isChordMode}`);
+  // console.log(`Changing Chord Mode to: `);
+  // CONFIG.isChordMode = !CONFIG.isChordMode;
+  // console.log(CONFIG.isChordMode);
 });
 
 input.onSwitchMoved(SwitchDirection.Right, () => {
@@ -181,15 +186,14 @@ input.onSwitchMoved(SwitchDirection.Right, () => {
   CONFIG.rhythym.custom.rests = [];
   light.setBrightness(100);
   light.setAll(0xff007f);
-  makeCustomRhythym();
+  light.setBrightness(0)
+  // makeCustomRhythym();
   return;
 });
 
 input.onSwitchMoved(SwitchDirection.Left, () => {
   console.log(`Ending Rhythym Mode`);
   CONFIG.rhythymMode = false;
-  light.setBrightness(0);
-  light.setAll(0x000000);
   return;
 });
 
