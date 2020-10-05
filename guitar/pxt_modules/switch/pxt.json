@@ -1,0 +1,20 @@
+{
+    "name": "switch",
+    "description": "A slide switch",
+    "dependencies": {
+        "core": "*",
+        "jacdac": "*"
+    },
+    "files": [
+        "README.md",
+        "switch.cpp",
+        "ns.ts",
+        "shims.d.ts",
+        "enums.d.ts",
+        "jacdac.ts"
+    ],
+    "public": true,
+    "targetVersions": {
+        "target": "1.6.4"
+    }
+}

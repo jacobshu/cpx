@@ -1,0 +1,23 @@
+{
+    "name": "lightsensor",
+    "description": "Onboard light level sensor",
+    "dependencies": {
+        "core": "*",
+        "jacdac": "*"
+    },
+    "files": [
+        "README.md",
+        "lightsensor.cpp",
+        "jacdac.ts",
+        "ns.ts",
+        "shims.d.ts",
+        "enums.d.ts"
+    ],
+    "testFiles": [
+        "test.ts"
+    ],
+    "public": true,
+    "targetVersions": {
+        "target": "1.6.4"
+    }
+}

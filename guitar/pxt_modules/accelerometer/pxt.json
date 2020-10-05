@@ -1,0 +1,28 @@
+{
+    "name": "accelerometer",
+    "description": "The accelerometer library",
+    "dependencies": {
+        "core": "*",
+        "jacdac": "*"
+    },
+    "files": [
+        "README.md",
+        "accelerometer.cpp",
+        "accelhw.cpp",
+        "axis.h",
+        "gesture.ts",
+        "shims.d.ts",
+        "enums.d.ts",
+        "ns.ts",
+        "pxtparts.json",
+        "part.svg",
+        "jacdac.ts"
+    ],
+    "testFiles": [
+        "test.ts"
+    ],
+    "public": true,
+    "targetVersions": {
+        "target": "1.6.4"
+    }
+}

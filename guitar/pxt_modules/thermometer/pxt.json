@@ -1,0 +1,23 @@
+{
+    "name": "thermometer",
+    "description": "A thermometer driver",
+    "dependencies": {
+        "core": "*",
+        "jacdac": "*"
+    },
+    "files": [
+        "README.md",
+        "temperature.cpp",
+        "target_temperature.h",
+        "shims.d.ts",
+        "enums.d.ts",
+        "ns.ts"
+    ],
+    "testFiles": [
+        "test.ts"
+    ],
+    "public": true,
+    "targetVersions": {
+        "target": "1.6.4"
+    }
+}
