@@ -1,0 +1,42 @@
+{
+    "name": "circuit-playground",
+    "description": "The Adafruit Circuit Playground Express library",
+    "dependencies": {
+        "base": "*",
+        "core---samd": "*",
+        "buttons": "*",
+        "accelerometer": "*",
+        "lightsensor": "*",
+        "thermometer": "*",
+        "mixer---samd": "*",
+        "color": "*",
+        "light": "*",
+        "switch": "*",
+        "pulse": "*",
+        "infrared": "*",
+        "microphone": "*",
+        "touch": "*"
+    },
+    "files": [
+        "README.md",
+        "panic.cpp",
+        "device.d.ts",
+        "config.ts",
+        "input.ts",
+        "ns.ts"
+    ],
+    "public": true,
+    "targetVersions": {
+        "target": "1.6.4"
+    },
+    "dalDTS": {
+        "corePackage": "../core---samd"
+    },
+    "yotta": {
+        "config": {
+            "HF2_HID": 1,
+            "DEVICE_USB": 1,
+            "PXT_SUPPORT_LIS3DH": 1
+        }
+    }
+}
